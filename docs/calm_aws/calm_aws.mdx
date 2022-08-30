@@ -1,0 +1,142 @@
+---
+title: Gateway to Infrastructure
+---
+
+# Gateway to Infrastructure
+
+Nutanix Calm is the gateway to a myraid of infrastructure across multiple clouds. Every infrastructure is exposed as services the developer can
+consume. Innovation is the life blood of every organization. Every key turning innovation starts as an idea. Public cloud (AWS, Azure, GCP) is
+an essential infrastructure provider for organization to test out their ideas.
+
+## Provider in Nutanix Calm
+
+Nutanix Calm supports the following providers (AHV, ESXi, AWS, Azure, GCP & Kubernetes). 
+
+:::note
+
+The lab was setup with the instructor AWS account. No actions on the trainees required for this section.
+
+:::
+
+1.  Click on **Setting** in the left hand toolbar . Click on **Accounts**.
+
+    ![](images/Calm_Providers.png)
+
+2.  Define the AWS Regions available to the project.
+
+    ![](images/AWS_Region.png)
+
+# Add AWS Account into Project
+
+1.  Click on **Project** in the left hand toolbar. Drill into the project created earlier.
+
+    ![](images/project_list.png)
+
+2.  Click on **Add Account**.
+
+    ![](images/Project_Detail2.png)
+
+3.  Click on **Select Account**. Select **MO_AWS**
+
+    ![](images/Add_AWS_Account.png)
+
+4.  Click on **Save Accounts and Project**.
+
+    ![](images/AWS_Account_Detail.png)
+
+## Create an AWS Blueprint
+
+1.  Click on **Blueprint** in the left hand toolbar. Select the
+    **Multi-VM/Pod Blueprint**
+
+    ![](images/Create_Bp.png)
+
+2.  Fill in your **initial**-aws as the blueprint name and select your
+    project
+
+    ![](images/bp_project.png)
+
+3.  Click on + to add Service
+
+    ![](images/add_service.png)
+
+4.  On the right side of the screen, select the AWS Account Provider
+
+    ![](images/Select_Account.png)
+
+5.  On the right side of the screen, select the following:
+
+    ![](images/aws_service_detail.png)
+
+6.  On the right side of the screen, select the following:
+
+    ![](images/AWS_Account_Detail2.png)
+
+7.  On the right side of the screen, uncheck the **Check Login upon
+    Create**. The lab was not setup to use elastic IP address. The
+    public IP address of the AWS EC2 instance may not be accessible from
+    the lab.
+
+8.  Click on **Add Credential**. Fill in the following:
+
+    - **Credential Name** - centos
+    - **Username** - centos
+    - **Secret Type** - ssh private Key
+    - **Key** - Paste in your own private key, or use the following key:
+
+    ```bash
+
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAm7e5jSovGg6Mt4X5WGF5l0qCMth/sSK+ZVKaMBaQRlKdttrb+O93mTOxXXga
+    F+zCGTu9+830peO+L+Yh1sG/ZKPm3kRmit4nZOH5GQeLoX8ivK7o1hvgEoyAxWbEuns39U54/+6J
+    jBgnRgzlO5hpY6LJ0lWeFKdqgUN/b1VlPYd6gg3xIzl9ZYqFyTFbwRoSDfEGCP2JKttzpsgIeDBz
+    W0wcu12kMQq6WqWraHt7RFWAvojlRA7rqsUL5S/VxDXgBZZQbP1iKeZXQtbeWZ9dMFf/TXvwwpMw
+    wXjuhpAUmlX2mBMYEJdvR3LED9wn/t67H5j6h4W5LplhhMErV0mNIwIDAQABAoIBABawTWPpKpXE
+    WvJ+ndcn1LybiZ749poLsuw2ferVzs3ASeSTvQtncOispII29q5Xu+xLTSI8XxIwvcxi3rlY35c9
+    Xm0yUDKZrenAFzhzZf/w81HEtn5D74EkYbrhf3agb4XZmj3INthnyIknZdsqGOkAliGEghUGU7lj
+    6VSCf87YDWtYeseriuPoZYYgknOZaPQRgN0S7+t8we9iYTX5X7HZXWBu68kWnCld0odz0K2BcVzy
+    n58+ZOzyd5t0Isl8tm0m3YMYxQw9dwkGvq4AT/8qbC6iAh/JMDIQiFOlRBSW4M/qKnWkXiwdloxC
+    SCZXlaewDad0v5QXOg2kamRM8ikCgYEAy0EUWaprRyxuWCNslQASQsOGyasTz2DlY545xPp2qzxC
+    1nk5nFGPSmoC04wY4pJHcTEaPRJ1whtbBPMG7+7v8nkqD6IkXc8dU+AUZVl7oYCtk4gMev5Y5t2N
+    CKJlyBNtpQBHB2uVpBF7M+EODSbkagwjWdrTGsx3E3//+RowGj8CgYEAxCCefbRQI/Q61hoQXMzG
+    z0chzKop05FgNx4Fd7uII+H9hqjCCaRiZBBunzS2PMIw1e3kR69AhuZ6xJh2oz/aSq/bTivPA2qC
+    JkBQ3RXvglQnsMa+cjTYJBwKSf3b+Fmuge9vxzFbcsgOYwN8ddEmCtsPnCFVUnbc1qsDF5I8bB0C
+    gYB7q4l6VVsY30v0jPlQX868mMO2iUVwdQCd8HQuCkeSQQRaA0CugGGzYXV+ykuJ8H9PvBS+/DBy
+    frqO9GBQNQ4Cdv7ErF98RL0Pf9RpJl03E1iJ38nYPFJThpJ9onJTnp6kOtr9BNT0Ez7nfhRSpEtu
+    yxvnXGH+eFIrp0JUiz6heQKBgAvZCJoBZYH2hANhCbIBcNUer+0ELoioVI6f0qa7/mpkgYM7+JTK
+    iGMRFw2pCoU7GeYie9LUxGohzDLKHwiXl+FBJFdhkBzdt0UGR5xDcfeGi+tC5khR5uivhPOZUUt8
+    Z21UAIWg9qxFZ5EVqdQYMVsghp3g6Z2UrpyNMh+fZuUFAoGBAIkV+8vY/b5c6j745IHTBOQIyqfH
+    JLlVChAL1PqeqPi9Ffy8iLR6CecOjx+sWwM9ePLt/urLJSrXamfnBK6j0ZY6d4Ps1kWSRIYIECqa
+    QrTdxF2BX7ppu4vG66u8wmvSs59ej1D7wRtsMP/VLfVdtZy5PrfxVHXbRHWAZrSOSsOb
+    -----END RSA PRIVATE KEY-----
+    ```
+
+    ![](images/add_credential.png)
+
+1.  Click on **Save**
+
+    ![](images/Save_Bp.png)
+
+## Launch the AWS Blueprint
+
+1.  On the top right side of the screen. Click on **Launch**
+
+2.  Fill in the **initial**-aws as the application name. Click on **Deploy**
+
+    ![](images/Launch_Bp.png)
+
+3.  Wait a few minutes for the provisioning to complete. The state will change from orange color **Provisioning** to green color **Running**.
+
+    ![](images/application_complete.png)
+
+4.  Click on **Service**. Click on **AWS**. The public IP address of the EC2 instance are available on the right hand side of the screen.
+
+    ![](images/app_service_detail.png)
+
+5.  Click on **Delete** to delete the AWS EC2 instance to prevent un-necessary consumption of the AWS resource.
+
+    ![](images/delete_aws_app.png)
+
+6.  Click on **Delete**.
+
+    ![](images/delete_confirmation.png)

@@ -1,0 +1,335 @@
+---
+title: "Calm DSL"
+---
+
+# Calm: Quickstart DSL
+
+## Overview
+
+### Setup
+
+To start the DSL lab we have provided a [DevWorkStation.json](<https://raw.githubusercontent.com/bmp-ntnx/QuickStartCalmDSL/master/DevWorkstation.json>)
+blueprint to quickly get you started. The included DevWorkstation.json builds a CentOS VM with all the necessary tools. This blueprint can be
+launched directly from Calm. Publish it to the Calm Marketplace for Self Service. 
+
+The icon picture required to publish into the Calm Marketplace could be downloaded [here](<https://github.com/bmp-ntnx/QuickStartCalmDSL/blob/master/software-developer.png>).
+
+### Launch DevWorkstation from Calm Marketplace
+
+1.  Go to the Calm Marketplace to launch the provisioning of the DevWorkstation.
+
+    ![](images/MPDevWorkstation.png)
+
+1.  **Important: Select the Credentials tab and enter desired User/Pass**
+
+    ![](images/Creds.png)
+
+1.  Enter the name of Application DevWorkstation-INITIALS and fill out the form with the requested information
+
+    ![](images/DevLaunch.png)
+
+1.  Press Create
+2.  While waiting review the audit log to see packages being deployed. The blueprint automatically installs several utilities along with Calm DSL
+3.  Once the application is **running** SSH to the DevWorkstation
+
+    The IP address of the DevWorkstation is listed under the application overview. The SSH user/pass is what was set under the credentials tab
+
+    ![](images/IPaddress.png)
+
+1.  Start the virtual environment and connect to Prism Central
+2.  Change to the **calm-dsl** directory from home
+3.  Run the following to switch to the virtual environment. This will enable the virtual environment for Calm DSL
+    
+    ```bash
+    cd calm-dsl
+    source venv/bin/activate
+    ```
+4.  **Optional:** This has already been done through the blueprint launch. Once you SSH into the DevWorkstation we can setup the
+    connection to Prism Central by running the following command:
+
+    ```bash
+    calm init dsl 
+    ```
+
+5.  Verify the current config settings by running
+    
+    ```bash
+    calm show config
+    ```
+
+    ![](images/Config.png)
+
+### List the current blueprints in Calm
+
+1.  To check all the blueprints in Calm with their UUID, description, application count, project, and state, run the following command:
+
+    ```bash
+    calm get bps
+    ```
+
+    ![](images/getbps.png)
+
+1.  Run the following to display quiet output with only the BP names
+
+    ```bash
+    calm get bps
+    ```
+
+    ![](images/calmgetbpsq.png)
+
+1.  Review python based blueprint and make a modification
+
+2.  Change to the **HelloBlueprint** directory and run ls
+
+    ```bash
+    cd HelloBlueprint
+    ls 
+    ```
+
+    This directory and it's contents were automatically created during the blueprint launch. As part of the DevWorkstation blueprint launch we ran `` `calm init bp ``\` which creates a 
+    sample blueprint configured to the connected Calm instance here is a file called ``blueprint.py`` which is a python version of a blueprint
+
+    There is a ``scripts`` directory. This is where the  bash/powershell/python scripts are stored that are referenced within the blueprint
+
+    ![](images/hellols.png)
+
+1.  Edit the blueprint using the vi/nano editors
+
+    ```bash
+    vi blueprint.py
+    ```
+
+2.  Review the blueprint for familiar constructs. To skip directly to a line enter ``:<linenumber>`` inside your ``vi`` console
+
+    -   Credentials (line 54-60)
+    -   OS Image (line 62-66)
+    -   Under class HelloPackage(Package) you will see references to the pkg_install_task.sh script in the scripts directory (line 139)
+    -   Basic VM spec information (vCPU/memory/disks/nics) (line 153-159)
+    -   Guest Customization contains cloud-init (line 161-171)
+
+3.  In the blueprint.py modify the number of vCPU
+
+    -   Change the vCPU from 2 to 4 (line 154)
+
+    ![](images/vcpu.png)
+
+1.  Add a unique VM name using a macro (line 185)
+
+    ```bash
+    provider_spec.name = "<Initials>-@@{calm_unique}@@"``
+    ```
+
+    ![](images/vmname.png)
+
+1.  Write/quit ``:wq`` the .py blueprint file to save and close
+2.  Modify pkg_install_task.sh
+3.  Change to the scripts directory and run ``ls``. We will see 2 scripts that are being referenced inside blueprint.py
+    ```bash
+    ls
+    ```
+    
+4.  Run the following command to view the current contents of the install script. What does the script do?
+    
+    ```bash
+    cat pkg_install_task.sh
+    ```
+
+   ![](images/more1.png)
+
+1.  Run the following command to replace the existing install script
+
+    ```bash
+    curl -Sks https://raw.githubusercontent.com/bmp-ntnx/prep/master/nginx > pkg_install_task.sh 
+    ```
+    
+2.  Run  the following to view the changed script. What does the script do now?
+    
+    ```bash
+    cat pkg_install_task.sh 
+    ``` 
+
+    ![](images/more2.png)
+
+1.  Push the modified blueprint.py to Calm
+2.  Return to the **HelloBlueprint** directory
+
+    -   Run the following command
+
+        ```bash
+        calm create bp --file blueprint.py --name FromDSL-<Initials> 
+        ```
+
+        This converts the .py file to json and pushes it to Calm
+
+        ![](images/syncbp.png)
+
+    -   **Optional:** Run  the following to view the python blueprint in json format from DSL
+
+        ```
+        calm compile bp -f blueprint.py 
+        ```
+
+    -   Verify your new blueprint by running
+
+        ```bash
+        calm get bps -q | grep FromDSL-<Initials> 
+        ```
+
+        ![](images/verifygrep.png)
+
+### Launch the blueprint into an application
+
+1.  Run this following command to verify all the current applications before launching your new app
+
+    ```bash
+    calm get apps 
+    ``` 
+
+2.  Run this following command  to quiet the details like we did with blueprints earlier
+
+    ```bash
+    calm get apps -q 
+    ```
+
+3.  Launch your newly uploaded blueprint into an application
+
+4.  Run this following command 
+
+    ```bash
+    calm launch bp FromDSL-<Initials> --app_name AppFromDSL-<Initials> -i 
+    ```
+
+    ![](images/launchbp.png)
+
+1.  Run the following command to see the application summary. Once the app status changes to **running** we will have a nginx server deployed from Calm DSL!
+
+    ```bash
+    calm describe app AppFromDSL-<Initials> 
+    ```
+
+    ![](images/describe.png)
+
+1.  Run the following command to search the json output for the VM IP
+
+    ```bash 
+    calm describe app AppFromDSL-<Initials> --out json | grep -F '[{\"ip\":\"' 
+    ```
+    
+2.  Now we need to get the VM/Application IP address. To get this we will pull the \"address\" from the application json output using jq
+    by running the following:
+
+    ```bash
+    calm describe app AppFromDSL-<Initials> --out json | jq '.status.resources.deployment_list[].substrate_configuration.element_list[].address' 
+    ```
+
+    ![](images/getip.png)
+    
+    ![](images/jqout.png)
+
+1.  Enter the IP in a web browser and this will take you to the nginx **Welcome to DSL** web page
+
+    ![](images/welcome2.png)
+
+1.  Log into Prism Central to verify
+    -   Check the blueprint created from DSL
+    -   Check the application launched from DSL
+
+Looking back - as you went through this lab not only did you use Calm DSL, but you also used several native Linux tools such as vi, curl, grep, cat, pipe, and
+redirects. Calm DSL allows extended flexibility by combining it with these powerful tools. Think about how you can add git to this workflow
+to track changes or modify blueprints with ``sed`` command.
+
+### Optional: Getting started with git
+
+Speaking of git lets contiue on and push our blueprint to git. We will need a github.com account before you can get started
+
+1. Logon to git and create new repo **dsl-blueprints**
+
+2. From the **HelloBlueprint** directory run the following commands:
+
+   ```bash title="to create a README file"
+   echo "# dsl-blueprints" >> README.md 
+   ```
+
+   ```bash title="to initialize git in your working directory"
+   git init
+   ```
+
+   ```bash title="identify your git email"
+   git config --global user.email "<youremail>@example.com" 
+   ```
+
+   ```bash title="identify your git username"
+   git config --global user.name "<GitUserName>" 
+   ```
+   ```bash title="because colors are cool"
+   git config --global color.ui true 
+   ```
+
+   ```bash title="to add your new github repo"
+   git remote add origin https://github.com/<GitUserName>/dsl-blueprints.git
+   ```
+    
+   ```bash title="to verify your remote origin"
+   git remote -v 
+   ```
+   
+   ![](images/gitsetup.png)
+   
+   ```bash title="to see whats being tracked"
+   git status 
+   ``` 
+   ```bash title="adds all files in the current directory into staging"
+   git add --all 
+   ``` 
+   ```bash title="to see the change after adding the files"
+   git status 
+   ``` 
+   ![](images/gitstatus.png)
+
+1.  From the above output we can see there are some keys, so lets remove those since this is being pushed to a public repo
+
+    ```bash
+    git rm --cached .local -r ``\`
+    ```
+    ```bash title="to verify the files were removed"
+    git status 
+    ``` 
+    
+    ![](images/gitremove.png)
+
+    ```bash title="to commit the files"
+    git commit -m "My DSL blueprints" 
+    ``` 
+    ![](images/gitcommit.png)
+    
+    ```bash title="to push to git"
+    git push -u origin master 
+    ```  
+    You will be prompted for your user/pass unless you setup key access to github
+
+    ![](images/gitpush.png)
+
+    Check your github repo and verify your files were pushed.
+
+### Change the memory for the subtrate
+
+1.  Now that your blueprints exists in both Calm and github lets
+    increase the memory to 8 in the blueprint by running:
+
+    ```bash title="use the linux sed tool to change the memory config"
+    sed -i 's/memory = 4/memory = 8/g' blueprint.py 
+    ```
+    
+    ```bash
+    git add blueprint.py 
+    ```
+    ```bash
+    git commit -m "change memory" 
+    ```
+    ```bash
+    git push -u origin master
+    ```
+
+2.  Back in github there should be a new verion under the **history** of blueprint.py with the changed memory
+
+    ![](images/diff.png)
