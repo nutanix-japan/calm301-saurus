@@ -8,20 +8,21 @@ The estimated time to complete this lab is **90 minutes**.
 
 :::
 
+# Product Version:
+
+1.  Calm 3.5.2 on PC2022.6
+
 # Pre-requisite:
 
 1.  This course assumes the trainees have basic knowledge of Calm and understand the constructs in Calm.
 2.  **Python** knowledge would be an added advantage but not essential.
 3.  This lab requires the use of Postman. Download and install [Postman](https://www.postman.com/downloads). 
     - For **Nutanix employee, install it in your Mac/PC and connect to the VPN**. 
-    - For **partners & customers, create a new VM using disk image for WindowsTool.qcow2**. 
+    - For **partners & customers, install it in the VDI desktop**. 
 
 # Purpose of the lab
 
-Nutanix Calm Marketplace and ServiceNow integration allowed our customer to provide self service of the underlying infrastructure like VM as a
-Service, Database as a Service, Kubernetes as a Service and Application as a Service etc. However, some of our customers would like to use a 3rd
-party Cloud Management Portal or IT Service Management software like BMC Remedy, ManageEngine etc. How can we help this group of customers to
-achieve this?
+Nutanix Calm Marketplace and ServiceNow integration allowed our customer to provide self service of the underlying infrastructure like VM as a Service, Database as a Service, Kubernetes as a Service and Application as a Service etc. However, some of our customers would like to use a 3rd party Cloud Management Portal or IT Service Management software like BMC Remedy, ManageEngine etc. How can we help this group of customers to achieve this?
 
 One of the key benefits in our Private Cloud solution was to bring public cloud experience into the private cloud. Automation was a key driver behind this. The objectives were to equip our automation SMEs
 with the skill sets to help our customers to streamline the process and integrate with disparate technologies through the use of api.
@@ -163,32 +164,18 @@ designer design every aspects of the automation from the provisioning of the VM 
 
 10. The application was started successfully.
 
-    ![](images/app_audit.png)
 
-# Variables and Macros in Nutanix Calm
+2.  Right click and install as administrator
 
-Variables were essential part of a blueprint to allow repeated
-provisioning or automation. Variables can either be static values saved
-as part of the Blueprint or they can be specified at **Runtime** (when
-the Blueprint is launched). Variables are specific to a given
-**Application Profile**, which is the platform on which the blueprint
-will be deployed. For example, a blueprint capable of being deployed to
-both AHV and AWS would have 2 Application Profiles. Each profile could
-have individual variables and VM configurations.
+    ![](images/install-postman.png)
 
-In the earlier setup, a variable: centos_public_key was created.
+3.  Click on **skip and go to the app**
 
-Macros enabled the designer to access the value of variables and
-properties that are set on entities. The variables could be user defined
-or system generated. Macros made the scripts generic and allow creation
-of reusable workflows.
+    ![](images/skip-postman)
 
-The macros was in the following format: @@{variable_name}@@ and could be
-referenced in the shell script, e-script and powershell. An example is
-print @@{centos_public_key}@@ Please reference to this url to find out a
-list of system defined variables.
+4.  Click on **Create a request**
 
-<https://portal.nutanix.com/page/documents/details/?targetId=Nutanix-Calm-Admin-Operations-Guide-v2_10%3Anuc-components-macros-overview-c.html>
+    ![](images/postman-app.png)
 
 # Understand the Nutanix APIs
 
@@ -203,8 +190,7 @@ the ability to perform the following operations.
 5.  Create VM Snapshot
 6.  Change Memory or CPU
 
-These operations were available in the Prism Central v3 API.
-(<https://www.nutanix.dev/reference/prism_central/v3/>).
+These operations were available in the Prism Central [v3 API](https://www.nutanix.dev/reference/prism_central/v3/)
 
 Nutanix APIs were available in REST (Representational State Transfer).
 REST service could be easily consumed by the different browsers and 3rd
@@ -252,24 +238,25 @@ Each API call would comprise of the following:
 
 ## Clone the centOS VM
 
-The purpose for cloning the Centos VM is to allow the trainee to change
-the memory of the Centos VM.
+The purpose for cloning the Centos VM is to allow the trainee to change the memory of the Centos VM.
 
-1.  Click on **Virtual Infrastructure-\>VM**.
+1.  Click on **Compute & Storage-\>VM**.
 
-    ![](images/pc_vm.png)
+    ![](images/clone-vm-pc2022-6.png.png)
 
 #\. Click on **Clone**. Name it to **CentOS\<trainee number\>**
 
 :   ![](images/vm_clone.png)
 
-# Change the VM Memory
+# Change the VM Memory using REST API (For illustration of this lab only)
 
 ## Use Case
 
 The application team may change the memory of the VM for the application
 optimum performance. The application team would want to perform a self
-service to change the memory.
+service to change the memory.  **This lab is for illustrative purpose to
+use api to change the memory**.  There is another section to use **Update Config** in the blueprint designer
+to update vCPU, Memory and Disk below.  
 
 ## Translate the use case into api operation
 
@@ -346,29 +333,27 @@ The use case could be translated into 3 operations:
 1.  The purpose of this section is to create a drop down list of the VMs
     in the Nutanix cluster for user selection.
 
-2.  Login into Prism Central and go into Nutanix Calm. Open the
-    blueprint
-
-3.  Create the following variables:
+2. Create the following variables:
 
     -   PC_IP **Store the value for Prism Central IP**
     -   newMemSize **Store the value for New Memory Size in Mb**
     
     ![](images/variable_new_memory.png)
 
-4.  Check the **Mark this variable mandatory** to allow the user to key
+3.  Check the **Mark this variable mandatory** to allow the user to key
     in the new memory size.
 
     ![](images/variable_mandatory.png)
 
-5.  Create a dynamic variable named vmname
+4.  Create a dynamic variable named vmname
 
     ![](images/variable_vmname.png)
 
-6.  Examine the following python scripts. This section of the python
+5.  Examine the following python scripts. This section of the python
     script configured the user name, password, Prism Central IP address
     (destination for the api) and the request structure. Copy this
     contents into the escript
+
 
     ```python
     user = "admin"
@@ -380,7 +365,7 @@ The use case could be translated into 3 operations:
     return r
     ```
 
-7.  The payload was the mandatory request parameters to be passed into
+6.  The payload was the mandatory request parameters to be passed into
     the api. Please copy the contents into the escript
 
     ``` python
@@ -393,7 +378,7 @@ The use case could be translated into 3 operations:
     }
     ```
 
-8.  This section of the python script was to invoke the request to the
+7.  This section of the python script was to invoke the request to the
     api. Copy this section of the scripts into the escript
 
     ``` python
@@ -405,7 +390,7 @@ The use case could be translated into 3 operations:
     r = process_request(url, url_method, user, password, headers, json.dumps(payload))
     ```
 
-9.  This section of the python script was to extract the vm name from
+8.  This section of the python script was to extract the vm name from
     the api response
 
     ``` python
@@ -414,42 +399,40 @@ The use case could be translated into 3 operations:
     for vm in vm_list_json['entities']:
      if vm['spec']: #sometimes this value will be '{}'
        vm_list.append("{}".format(vm['spec']['name']))
-    >
     print ','.join(vm_list) 
     ```
 
-10. This was the picture of the consolidated script.
+9. This was the picture of the consolidated script.
 
     ![](images/api_list_vm.png)
 
-11. Launch the blueprint to check on the display for the selection of
-    the VM.
-
-    ![](images/calm_launch_bp.png)
+10.  Check the **Mark this variable mandatory** to allow the user to select the vm.
 
 ## Operation 2: Retrieve the VM details, Update the new memory and power off the VM
 
-1.  Go to the **Service** on the right side of the screen. Change the
-    **Cloud** from **Nutanix** to **Existing Machine**. Changing the VM
-    memory is not to provision but automating on an existing machine.
+1.  On the left side of the screen, create a new service.  Click on **+**
 
-    ![](images/vm_existing_machine.png)
+    ![](images/add-service-pc2022-6.png)
 
-2.  Fill in an **IP address**. Since the execution was based on the
-    selection of the VM, the contents in this field does not matter.
+2.  On the right side of the screen, Select **Existing Service**.  Key in **127.0.0.1** in IP address.
 
-    ![](images/vm_ip_address.png)
+    ![](images/existing-service-details-pc2022-6.png)
 
-3.  Click on **Package-\>Install**. Click on **+ Task**
+3.  Scroll down.  Select the credential.  Uncheck the **Check log-in upon create**
+
+    ![](images\connection-pc2022-6.png)
+
+
+4.  Click on **Package-\>Install**. Click on **+ Task**
 
     ![](images/package_install.png)
 
-4.  Name the task: **UpdateMemory**
+5.  Name the task: **UpdateMemory**
 
     -   Type: Execute
     -   Script Type: Escript
 
-    ![](images/task_update_memory.png)
+    ![](images/task-update-memory-pc2022-6.png)
 
 5.  Refer to the following api to update the specification of the [VM API](https://www.nutanix.dev/reference/prism_central/v3/api/vms/putvmsuuid)
 
@@ -469,7 +452,7 @@ The use case could be translated into 3 operations:
     return r
     ```
 
-7.  Copy the contents into the escript. This section of the escript
+8.  Copy the contents into the escript. This section of the escript
     define the request parameters to filter the specific VM instead of
     all the VMs in the cluster.
 
@@ -484,7 +467,7 @@ The use case could be translated into 3 operations:
     }  
     ```
 
-8.  Copy the contents into the escript. This section will execute and
+9.  Copy the contents into the escript. This section will execute and
     retrieve the specific VM.
 
     ``` python
@@ -502,7 +485,7 @@ The use case could be translated into 3 operations:
          vm_json = vm   
     ```
 
-9.  Copy the contents into the escript. This section manipulates the
+10.  Copy the contents into the escript. This section manipulates the
     json contents to change to the new memory size and power off the VM.
 
     ``` python
@@ -515,7 +498,7 @@ The use case could be translated into 3 operations:
     print "VM JSON: " + json.dumps(vm_json)
     ```
 
-10. Copy the contents into the escript. This section will put the new
+11. Copy the contents into the escript. This section will put the new
     json specification to the Prism Central to execute the changes. If
     Prism Central executed the changes successfully, it will return
     exit 0. Otherwise, it is exit 1.
@@ -533,28 +516,82 @@ The use case could be translated into 3 operations:
      exit(1)  
     ```
 
-11. Launch the Blueprint.
+### Launch the blueprint
 
-    ![](images/launch_app.png)
+1. Click on **Launch**.  
 
-12. Click on the **Audit** tab of the application. Expand the **Create**
+2.  Launch the Blueprint.  Click on **Deploy**
+
+    ![](images/launch-app-pc2022-6.png)
+    ![](images/launch-app-2-pc2022-6.png)
+
+3. Click on the **Audit** tab of the application. Expand the **Create**
 
     ![](images/app_success.png)
 
-13. Observe the section on the **Update Memory**
+4. Observe the section on the **Update Memory**
 
     ![](images/audit_update_memory.png)
 
-14. Go to **Virtual Infrastructure > VMs**
+5. Go to **Virtual Infrastructure > VMs**
 
-    ![](images/pc_vm.png)
+    ![](images/pc-vm-pc2022-6.png)
 
-15. Drill into **CentosVM**
+6. Drill into **CentosVM**
 
-    ![](images/centos_vm.png)
+    ![](images/centos-vm-pc2022-6.png)
 
 ## Operation 3: Power on the VM
 
 1.  Create another task to power up the VM.
+
 2.  Fill up the contents of the escript based on the learning until now.
+
 3.  The end result is the memory of the VM was changed and powered on.
+
+# Use Update Config in Blueprint Designer to update CPU and Memory (Preferred Approach)
+
+1.  Refer to **Calm 101->Blueprint** on how to create the blueprint
+
+2.  On the left side of the screen, click on  **+** in **Update Config** section.
+
+    ![](images/UpdateConfig-pc2022-6.png)
+
+3.  The blueprint designer can choose which type of configuration to allow the consumer to update as part of Day 2 operation.  Click on **Update** for both **vCPU and Memory**
+
+    ![](images/update-config-detail-pc2022-6.png)
+
+4.  Change the values as shown below:
+
+    vCPU: Min **2** Max **4**
+    Memory (GIB): Min **2** Max **8**
+
+    ![](images/update-config-2-pc2022-6.png)
+
+5.  Scroll down.  Click on **Done**
+
+6.  On the top of the screen, click on **Save**
+
+    ![](images/save-bp-pc2022-6.png)
+
+7.  Launch the application and wait for it to be in "Running" state.
+
+8.  Click on **Manage**
+
+    ![](images/app-running-pc2022-6.png)
+
+9.  Click on **Config1**
+
+    ![](images/app-manage-pc2022-6.png)
+
+10.  Choose to update the memory to **3** GB.  Click on **Run**
+
+    ![](images/run-config-pc2022-6.png)
+
+11.  Click on **Audit**.  Look at the memory was updated successfully
+
+    ![](images/update-vm-memory-pc2022-6.png)
+
+12.  Click on **Service**.  Check the memory was updated successfully
+
+    ![](images/app-vm-memory-updated-pc2022-6.png)
