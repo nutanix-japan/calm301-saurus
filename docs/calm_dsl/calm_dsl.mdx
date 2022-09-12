@@ -4,6 +4,10 @@ title: "Calm DSL"
 
 # Calm: Quickstart DSL
 
+# Product Configuration:
+
+1.  Calm 3.5.2 on PC2022.6
+
 ## Overview
 
 ### Setup
@@ -18,40 +22,58 @@ The icon picture required to publish into the Calm Marketplace could be download
 
 1.  Go to the Calm Marketplace to launch the provisioning of the DevWorkstation.
 
-    ![](images/MPDevWorkstation.png)
+    ![](images/mp-dsl.png)
 
-1.  **Important: Select the Credentials tab and enter desired User/Pass**
+2.  Click on **Launch** 
 
-    ![](images/Creds.png)
+    ![](images/mp-launch-pc2022-6.png)
 
-1.  Enter the name of Application DevWorkstation-INITIALS and fill out the form with the requested information
+3. Fill in the **application name**.  Click **Deploy**
 
-    ![](images/DevLaunch.png)
+    ![](images/launch-dsl-pc2022-6.png)
+    ![](images/launch-dsl-2-pc2022-6.png)
 
-1.  Press Create
-2.  While waiting review the audit log to see packages being deployed. The blueprint automatically installs several utilities along with Calm DSL
-3.  Once the application is **running** SSH to the DevWorkstation
 
-    The IP address of the DevWorkstation is listed under the application overview. The SSH user/pass is what was set under the credentials tab
+4.  Once the application is **running** SSH to the DevWorkstation
 
-    ![](images/IPaddress.png)
+    The IP address of the DevWorkstation is listed under the **Services**. The SSH user/pass is what was set under the credentials tab.
 
-1.  Start the virtual environment and connect to Prism Central
-2.  Change to the **calm-dsl** directory from home
-3.  Run the following to switch to the virtual environment. This will enable the virtual environment for Calm DSL
+   ![](images/app-details-pc-2022-6.png)
+
+    
+### Connect to Calm
+
+1.  Run the following command to start the Docker container
+
+    ```bash
+    sudo docker run -it ntnx/calm-dsl
+    ```
+
+    ![](images/download-calm-dsl-pc2022-6.png)
+
+2.  This step is necessary when the docker client session have expired.  Execute into the docker container.    
     
     ```bash
-    cd calm-dsl
-    source venv/bin/activate
+    sudo docker exec -it friendly_jennings /bin/bash
     ```
-4.  **Optional:** This has already been done through the blueprint launch. Once you SSH into the DevWorkstation we can setup the
-    connection to Prism Central by running the following command:
+
+3.  Run this command to connect to Calm.  Calm can exist in Calm VM or within the Prism Central.
 
     ```bash
     calm init dsl 
     ```
 
-5.  Verify the current config settings by running
+4.  Fill in the following details:
+
+    Prism Central IP: **Calm VM IP**
+    Port: **9440**
+    Username: **admin**
+    Passowrd: **Calm VM Password**
+    Project: **Your Project**
+
+    ![](images/connect-calm-dsl-pc2022-6.png)
+
+4.  Verify the current config settings by running
     
     ```bash
     calm show config
@@ -330,6 +352,6 @@ Speaking of git lets contiue on and push our blueprint to git. We will need a gi
     git push -u origin master
     ```
 
-2.  Back in github there should be a new verion under the **history** of blueprint.py with the changed memory
+2.  Back in github there should be a new version under the **history** of blueprint.py with the changed memory
 
     ![](images/diff.png)
