@@ -1,0 +1,246 @@
+---
+title: "Calm Blueprints & Macro"
+---
+
+:::info
+
+The estimated time to complete this lab is **60 minutes**.
+
+:::
+
+# Product Configuration:
+
+1.  Calm 3.5.2 on PC2022.6
+
+# Create a Multi-VM Blueprint in Calm
+
+Blueprint is like an architect blueprint which design every facet from the pillar columns to the facade of the building. The automation
+designer design every aspects of the automation from the provisioning of the VM to installation of packages.
+
+1.  Click on **Create Blueprint**.
+
+2.  Choose **Multi-VM/pod** blueprint
+
+    ![](images/multi-vm-bp-pc2022-6.png)
+
+3.  Fill in the **blueprint name**. Select the **Project**. Click on **Proceed**.
+
+    ![](images/bp-name-pc2022-6.png)
+
+4.  On the left side of the screen, click on **+** sign to add a service.
+
+    ![](images/add-service-pc2022-6.png)
+
+## Create Credentials in the blueprint
+
+1.  On the top of the screen, click on **Credentials** to add a credential. The credentials were used by the blueprint for the following purposes:
+
+    -   Login to the newly provisioned guest OS.
+    -   Credential to login to Prism Central or any 3rd party application.
+
+    ![](images/bp-credential-pc2022-6.png)
+
+2.  Add in the **Credential** for Prism Central. Get the password from
+    the spreadsheet provided by the trainer.
+
+    ![](images/pc-credential-pc2022-6.png)
+
+3.  Fill out the following fields:
+
+    -   **Credential Name** - PC
+    -   **Username** - admin
+    -   **Secret Type** - password
+    -   **Password** - \<Key in Prism Central password\>
+
+4.  Create the credential for centos. Fill out the following fields:
+
+    -   **Credential Name** - CENTOS
+    -   **Username** - centos
+    -   **Secret Type** - ssh private key
+
+    \- **Key** - Paste in your own private key, or use: :
+
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNG
+        ZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK
+        6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9
+        HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7Gy
+        hCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNR
+        uz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5OrwIBJQKCAQB++q2WCkCmbtByyrAp
+        6ktiukjTL6MGGGhjX/PgYA5IvINX1SvtU0NZnb7FAntiSz7GFrODQyFPQ0jL3bq0
+        MrwzRDA6x+cPzMb/7RvBEIGdadfFjbAVaMqfAsul5SpBokKFLxU6lDb2CMdhS67c
+        1K2Hv0qKLpHL0vAdEZQ2nFAMWETvVMzl0o1dQmyGzA0GTY8VYdCRsUbwNgvFMvBj
+        8T/svzjpASDifa7IXlGaLrXfCH584zt7y+qjJ05O1G0NFslQ9n2wi7F93N8rHxgl
+        JDE4OhfyaDyLL1UdBlBpjYPSUbX7D5NExLggWEVFEwx4JRaK6+aDdFDKbSBIidHf
+        h45NAoGBANjANRKLBtcxmW4foK5ILTuFkOaowqj+2AIgT1ezCVpErHDFg0bkuvDk
+        QVdsAJRX5//luSO30dI0OWWGjgmIUXD7iej0sjAPJjRAv8ai+MYyaLfkdqv1Oj5c
+        oDC3KjmSdXTuWSYNvarsW+Uf2v7zlZlWesTnpV6gkZH3tX86iuiZAoGBAKM0mKX0
+        EjFkJH65Ym7gIED2CUyuFqq4WsCUD2RakpYZyIBKZGr8MRni3I4z6Hqm+rxVW6Dj
+        uFGQe5GhgPvO23UG1Y6nm0VkYgZq81TraZc/oMzignSC95w7OsLaLn6qp32Fje1M
+        Ez2Yn0T3dDcu1twY8OoDuvWx5LFMJ3NoRJaHAoGBAJ4rZP+xj17DVElxBo0EPK7k
+        7TKygDYhwDjnJSRSN0HfFg0agmQqXucjGuzEbyAkeN1Um9vLU+xrTHqEyIN/Jqxk
+        hztKxzfTtBhK7M84p7M5iq+0jfMau8ykdOVHZAB/odHeXLrnbrr/gVQsAKw1NdDC
+        kPCNXP/c9JrzB+c4juEVAoGBAJGPxmp/vTL4c5OebIxnCAKWP6VBUnyWliFhdYME
+        rECvNkjoZ2ZWjKhijVw8Il+OAjlFNgwJXzP9Z0qJIAMuHa2QeUfhmFKlo4ku9LOF
+        2rdUbNJpKD5m+IRsLX1az4W6zLwPVRHp56WjzFJEfGiRjzMBfOxkMSBSjbLjDm3Z
+        iUf7AoGBALjvtjapDwlEa5/CFvzOVGFq4L/OJTBEBGx/SA4HUc3TFTtlY2hvTDPZ
+        dQr/JBzLBUjCOBVuUuH3uW7hGhW+DnlzrfbfJATaRR8Ht6VU651T+Gbrr8EqNpCP
+        gmznERCNf9Kaxl/hlyV5dZBe/2LIK+/jLGNu9EJLoraaCBFshJKF
+        -----END RSA PRIVATE KEY-----
+
+    ![](images/centos-credential-pc2022-6.png)
+
+5. Fill out the following fields:
+
+    -   **Credential Name** - Centos 2 Credential
+    -   **Username** - centos
+    -   **Secret Type** - password
+    -   **Password** - \Fill in the password provided by the trainer\> 
+
+6.  Click **Save**, and then **Back**.
+
+## Configure to download the disk image
+
+1.  Click on **Configuration**
+
+    ![](images/bp-configuration-pc2022-6.png)
+
+2.  Click on **+**
+
+    ![](images/add-downloaded-pc2022-6.png)
+
+3.  Fill in the following details:
+    
+    Package Name: **AHV_78**
+    Image Name: **AHV_78**
+    Source URI: **http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2**
+    Product Name: **AHV**
+    Product Version: **7_8**
+
+    ![](images/ahv78_download-pc2022-6.png
+
+## Configure the Service in the blueprint
+
+1. Look at the **Service1** on the right of the screen.
+
+    ![](images/service-detail-pc2022-6.png)
+
+2. Fill in the **VM Configuration**.
+
+    ![](images/bp-vm-config-pc2022-6.png)
+
+3.  Copy the **cloud-init** contents into the screen.
+
+    ``` bash
+    #cloud-config
+    disable_root: False
+    ssh_enabled: True
+    ssh_pwauth: True
+    users:
+      - name: centos
+        passwd: @@{Centos 2 Credential.secret}@@
+        chpasswd: { expire: False }
+    ssh-authorized-keys:
+      - @@{centos_public_key}@@
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+
+    #cloud-config
+    fqdn: @@{name}@@.@@{domain_name}@@
+    manage_etc_hosts: true
+    hostname: @@{name}@@
+
+    ```
+
+    ::: note
+    ::: title
+    Note
+    :::
+    :::
+
+4.  This is the picture of the cloud-init
+
+    ![](images/cloud-init-pc2022-6.png)
+
+5.  Choose the **CentOS7** image
+
+    ![](images/bp-svc-disk-image-pc2022-6.png)
+
+4.  Choose **Primary** for Network Adapter
+
+    ![](images/bp-network-pc2022-6.png)
+
+5.  Select **centos** for the credential.
+
+    ![](images/bp-svc-centos-pc2022-6.png)
+
+## Configure variables in the blueprint
+
+1.  On the left side of the screen, click on the **Default** Profile
+
+    ![](images/default-profile-pc2022-6.png)
+
+2.  On the right side of the screen, add a variable
+
+    ![](images/add-variable-pc-2022-6.png)
+
+3.  Create a static string variable named **centos_public_key**.  
+
+    \- **Key** - Paste in your own public key, or use: :
+
+        ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNGZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7GyhCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNRuz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5Orw== rsa-key-20190108
+
+    ![](images/centos-variable-pc2022-6.png)
+
+## Launch the blueprint. 
+
+    ![](images/launch-bp-pc2022-6.png)
+
+1.  Fill in the **application name** & click on
+    **Create**
+
+    ![](images/app-name-pc2022-6.png)
+    ![](images/app-name-2-pc2022-6.png)
+
+2. The application was started successfully.
+
+    ![](images/app_audit.png)
+
+# Variables in Nutanix Calm
+
+Variables were essential part of a blueprint to allow repeated
+provisioning or automation. Variables can either be static values saved
+as part of the Blueprint or retrieved dynamically from a 3rd party integration.  
+
+Static variable can also be specified at **Runtime** (when the Blueprint is launched). 
+
+Dynamic variable allows Nutanix Calm to use the following methods to retrieve the value dynamically
+
+1.  EScript or 
+2.  HTTP
+
+    ![](images/bp-dynamic-variable-pc2022-6.png)
+
+The scope of the variables depends on where the variable is created.
+
+1.  Service variable - The variable can be referenced within the service without specifying the service name.
+2.  Application Profile variable - The variable is global for this application profile and can be used across services.
+
+**Application Profile**, which is the platform on which the blueprint
+will be deployed. For example, a blueprint capable of being deployed to
+both AHV and AWS would have 2 Application Profiles. Each profile could
+have individual variables and VM configurations.
+
+
+# Macros in Nutanix Calm
+
+Macros enabled the designer to access the value of variables and
+properties that are set on entities. The variables could be user defined
+or system generated. Macros made the scripts generic and allow creation
+of reusable workflows.
+
+The macros was in the following format: @@{variable_name}@@ and could be
+referenced in the shell script, e-script and powershell. Please reference to this url to find out a
+list of system defined variables.
+
+<https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Calm-Admin-Operations-Guide-v3_6_0:nuc-components-macros-overview-c.html>
+

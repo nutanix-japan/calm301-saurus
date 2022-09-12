@@ -14,7 +14,7 @@ The estimated time to complete this lab is **90 minutes**.
 2.  **Python** knowledge would be an added advantage but not essential.
 3.  This lab requires the use of Postman. Download and install [Postman](https://www.postman.com/downloads). 
     - For **Nutanix employee, install it in your Mac/PC and connect to the VPN**. 
-    - For **partners & customers, create a new VM using disk image for WindowsTool.qcow2**. 
+    - For **partners & customers, install it in the VDI desktop**. 
 
 # Purpose of the lab
 
@@ -26,188 +26,23 @@ achieve this?
 One of the key benefits in our Private Cloud solution was to bring public cloud experience into the private cloud. Automation was a key driver behind this. The objectives were to equip our automation SMEs
 with the skill sets to help our customers to streamline the process and integrate with disparate technologies through the use of api.
 
+# Install Postman
 
-# Create a Blueprint in Calm
+1.  Open a Chrome browser and search for Postman
 
-Blueprint is like an architect blueprint which design every facet from the pillar columns to the facade of the building. The automation
-designer design every aspects of the automation from the provisioning of the VM to installation of packages.
+2.  Right click and install as administrator
 
-1.  Click on **Create Blueprint**.
+    ![](images/install-postman.png)
 
-2.  Choose **Multi-VM/pod** blueprint
+3.  Click on **skip and go to the app**
 
-    ![](images/multi_vm_blueprints.png)
+    ![](images/skip-postman)
 
-3.  Fill in the **blueprint name**. Select the **Project**. Click on **Proceed**.
+4.  Click on **Create a request**
 
-    ![](images/blueprint_name.png)
-
-4.  Click on + sign to add a service.
-
-    ![](images/calm_service.png)
-
-5.  Click on Credential to add a credential. The credentials were used for the following purposes:
-
-    -   Login to the newly provisioned guest OS.
-    -   Credential to login to Prism Central or any 3rd party application.
-
-    ![](images/credential.png)
-
-6.  Add in the **Credential** for Prism Central. Get the password from
-    the spreadsheet provided by the trainer.
-
-    ![](images/pc_credential.png)
-
-7.  Fill out the following fields:
-
-    -   **Credential Name** - PC
-    -   **Username** - admin
-    -   **Secret Type** - password
-    -   **Password** - \<Key in Prism Central password\>
-
-8.  Create the credential for centos. Fill out the following fields:
-
-    -   **Credential Name** - centos
-    -   **Username** - centos
-    -   **Secret Type** - ssh private key
-
-    \- **Key** - Paste in your own private key, or use: :
-
-        -----BEGIN RSA PRIVATE KEY-----
-        MIIEowIBAAKCAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNG
-        ZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK
-        6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9
-        HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7Gy
-        hCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNR
-        uz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5OrwIBJQKCAQB++q2WCkCmbtByyrAp
-        6ktiukjTL6MGGGhjX/PgYA5IvINX1SvtU0NZnb7FAntiSz7GFrODQyFPQ0jL3bq0
-        MrwzRDA6x+cPzMb/7RvBEIGdadfFjbAVaMqfAsul5SpBokKFLxU6lDb2CMdhS67c
-        1K2Hv0qKLpHL0vAdEZQ2nFAMWETvVMzl0o1dQmyGzA0GTY8VYdCRsUbwNgvFMvBj
-        8T/svzjpASDifa7IXlGaLrXfCH584zt7y+qjJ05O1G0NFslQ9n2wi7F93N8rHxgl
-        JDE4OhfyaDyLL1UdBlBpjYPSUbX7D5NExLggWEVFEwx4JRaK6+aDdFDKbSBIidHf
-        h45NAoGBANjANRKLBtcxmW4foK5ILTuFkOaowqj+2AIgT1ezCVpErHDFg0bkuvDk
-        QVdsAJRX5//luSO30dI0OWWGjgmIUXD7iej0sjAPJjRAv8ai+MYyaLfkdqv1Oj5c
-        oDC3KjmSdXTuWSYNvarsW+Uf2v7zlZlWesTnpV6gkZH3tX86iuiZAoGBAKM0mKX0
-        EjFkJH65Ym7gIED2CUyuFqq4WsCUD2RakpYZyIBKZGr8MRni3I4z6Hqm+rxVW6Dj
-        uFGQe5GhgPvO23UG1Y6nm0VkYgZq81TraZc/oMzignSC95w7OsLaLn6qp32Fje1M
-        Ez2Yn0T3dDcu1twY8OoDuvWx5LFMJ3NoRJaHAoGBAJ4rZP+xj17DVElxBo0EPK7k
-        7TKygDYhwDjnJSRSN0HfFg0agmQqXucjGuzEbyAkeN1Um9vLU+xrTHqEyIN/Jqxk
-        hztKxzfTtBhK7M84p7M5iq+0jfMau8ykdOVHZAB/odHeXLrnbrr/gVQsAKw1NdDC
-        kPCNXP/c9JrzB+c4juEVAoGBAJGPxmp/vTL4c5OebIxnCAKWP6VBUnyWliFhdYME
-        rECvNkjoZ2ZWjKhijVw8Il+OAjlFNgwJXzP9Z0qJIAMuHa2QeUfhmFKlo4ku9LOF
-        2rdUbNJpKD5m+IRsLX1az4W6zLwPVRHp56WjzFJEfGiRjzMBfOxkMSBSjbLjDm3Z
-        iUf7AoGBALjvtjapDwlEa5/CFvzOVGFq4L/OJTBEBGx/SA4HUc3TFTtlY2hvTDPZ
-        dQr/JBzLBUjCOBVuUuH3uW7hGhW+DnlzrfbfJATaRR8Ht6VU651T+Gbrr8EqNpCP
-        gmznERCNf9Kaxl/hlyV5dZBe/2LIK+/jLGNu9EJLoraaCBFshJKF
-        -----END RSA PRIVATE KEY-----
-
-    ![](images/centos_credential.png)
-
-9.  Click **Save**, and then **Back**.
-
-10. Look at the **Service1** on the right of the screen.
-
-    ![](images/service_name.png)
-
-11. Fill in the **VM Configuration**.
-
-> ![](images/vm.png)
-
-1.  Copy the **cloud-init** contents into the screen.
-
-    ``` bash
-    #cloud-config
-    users:
-    - name: centos
-    ssh-authorized-keys:
-      - @@{centos_public_key}@@
-    sudo: ['ALL=(ALL) NOPASSWD:ALL'] 
-    ```
-
-    ::: note
-    ::: title
-    Note
-    :::
-    :::
-
-2.  This is the picture of the cloud-init
-
-    ![](images/cloud-init.png)
-
-3.  Choose the **Centos-7-x86_64-GenericCloud-18** image
-
-    ![](images/disk_image.png)
-
-4.  Choose **Rx-Automation-Network** for Network Adapter
-
-    ![](images/blueprint_nic.png)
-
-5.  Select **centos** for the credential.
-
-    ![](images/blueprint_credential.png)
-
-6.  On the left side of the screen, click on **Default**.
-
-    ![](images/app_profile.png)
-
-7.  On the right side of the screen, add a new variable. This variable
-    was essential to set the public cloud into the cloud-init of the
-    GuestOS.
-
-    ![](images/variable_pk.png)
-
-8.  Paste the contents of the ssh public key into the variable
-
-    ``` bash
-    ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNGZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7GyhCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNRuz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5Orw== rsa-key-20190108
-    ```
-
-9.  Launch the blueprint. Fill in the **application name** & click on
-    **Create**
-
-    ![](images/launch_bp.png)
-
-10. The application was started successfully.
-
-    ![](images/app_audit.png)
-
-# Variables and Macros in Nutanix Calm
-
-Variables were essential part of a blueprint to allow repeated
-provisioning or automation. Variables can either be static values saved
-as part of the Blueprint or they can be specified at **Runtime** (when
-the Blueprint is launched). Variables are specific to a given
-**Application Profile**, which is the platform on which the blueprint
-will be deployed. For example, a blueprint capable of being deployed to
-both AHV and AWS would have 2 Application Profiles. Each profile could
-have individual variables and VM configurations.
-
-In the earlier setup, a variable: centos_public_key was created.
-
-Macros enabled the designer to access the value of variables and
-properties that are set on entities. The variables could be user defined
-or system generated. Macros made the scripts generic and allow creation
-of reusable workflows.
-
-The macros was in the following format: @@{variable_name}@@ and could be
-referenced in the shell script, e-script and powershell. An example is
-print @@{centos_public_key}@@ Please reference to this url to find out a
-list of system defined variables.
-
-<https://portal.nutanix.com/page/documents/details/?targetId=Nutanix-Calm-Admin-Operations-Guide-v2_10%3Anuc-components-macros-overview-c.html>
+    ![](images/postman-app.png)
 
 # Understand the Nutanix APIs
-
-When the customer would like to implement the self service of Nutanix
-infrastructure in their current ITSM software, the requirements would be
-the ability to perform the following operations.
-
-> 1.  Create Project
-> 2.  Create User
-> 3.  Associate User to a Project
-> 4.  Launch a Nutanix Calm blueprint to provision the VM
-> 5.  Create VM Snapshot
-> 6.  Change Memory or CPU
 
 These operations were available in the Prism Central v3 API.
 (<https://www.nutanix.dev/reference/prism_central/v3/>).
@@ -275,7 +110,7 @@ the memory of the Centos VM.
 
 The application team may change the memory of the VM for the application
 optimum performance. The application team would want to perform a self
-service to change the memory.
+service to change the memory.  This op
 
 ## Translate the use case into api operation
 
