@@ -111,15 +111,13 @@ designer design every aspects of the automation from the provisioning of the VM 
 
 3.  Fill in the following details:
     
-    Package Name: **AHV_78**
-    Image Name: **AHV_78**
-    Source URI: **http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2**
-    Product Name: **AHV**
-    Product Version: **7_8**
+    - Package Name: **AHV_78**
+    - Image Name: **AHV_78**
+    - Source URI: **http://download.nutanix.com/Calm/CentOS-7-x86_64-2003.qcow2**
+    - Product Name: **AHV**
+    - Product Version: **7_8**
 
-    ![](images/ahv78_download-pc2022-6.png
-
-## Configure the Service in the blueprint
+## Configure the Service in the Blueprint
 
 1. Look at the **Service1** on the right of the screen.
 
@@ -131,7 +129,7 @@ designer design every aspects of the automation from the provisioning of the VM 
 
 3.  Copy the **cloud-init** contents into the screen.
 
-    ``` bash
+    ```bash
     #cloud-config
     disable_root: False
     ssh_enabled: True
@@ -148,14 +146,7 @@ designer design every aspects of the automation from the provisioning of the VM 
     fqdn: @@{name}@@.@@{domain_name}@@
     manage_etc_hosts: true
     hostname: @@{name}@@
-
     ```
-
-    ::: note
-    ::: title
-    Note
-    :::
-    :::
 
 4.  This is the picture of the cloud-init
 
@@ -185,30 +176,33 @@ designer design every aspects of the automation from the provisioning of the VM 
 
 3.  Create a static string variable named **centos_public_key**.  
 
-    \- **Key** - Paste in your own public key, or use: :
-
-        ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNGZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7GyhCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNRuz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5Orw== rsa-key-20190108
+    **Key** - Paste in your own public key, or use the follwing key:
+      
+    ```text
+    ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNGZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9HtiETg29TZXgCYPFXipLBHSZYkBmGgccAeY9dq5ywiywBJLuoSovXkkRJk3cd7GyhCRIwYzqfdgSmiAMYgJLrz/UuLxatPqXts2D8v1xqR9EPNZNzgd4QHK4of1lqsNRuz2SxkwqLcXSw0mGcAL8mIwVpzhPzwmENC5Orw== rsa-key-20190108
+    ```
 
     ![](images/centos-variable-pc2022-6.png)
 
-## Launch the blueprint. 
+## Launching the blueprint
 
-    ![](images/launch-bp-pc2022-6.png)
+1. Launch the blueprint by click on **Launch** button
 
-1.  Fill in the **application name** & click on
-    **Create**
+   ![](images/launch-bp-pc2022-6.png)
 
-    ![](images/app-name-pc2022-6.png)
-    ![](images/app-name-2-pc2022-6.png)
+1. Fill in the **application name** & click on **Create**
 
-2. The application was started successfully.
+   ![](images/app-name-pc2022-6.png)
 
-    ![](images/app-running-pc2022-6.png)
+   ![](images/app-name-2-pc2022-6.png)
+
+2. The application will start successfully
+
+   ![](images/app-running-pc2022-6.png)
 
 # Variables in Nutanix Calm
 
-Variables were essential part of a blueprint to allow repeated
-provisioning or automation. Variables can either be static values saved
+Variables were essential part of a blueprint to allow repeated provisioning or automation. Variables can either be static values saved
 as part of the Blueprint or retrieved dynamically from a 3rd party integration.  
 
 Static variable can also be specified at **Runtime** (when the Blueprint is launched). 
@@ -225,22 +219,14 @@ The scope of the variables depends on where the variable is created.
 1.  Service variable - The variable can be referenced within the service without specifying the service name.
 2.  Application Profile variable - The variable is global for this application profile and can be used across services.
 
-**Application Profile**, which is the platform on which the blueprint
-will be deployed. For example, a blueprint capable of being deployed to
-both AHV and AWS would have 2 Application Profiles. Each profile could
-have individual variables and VM configurations.
-
+**Application Profile**, which is the platform on which the blueprint will be deployed. For example, a blueprint capable of being deployed to
+both AHV and AWS would have 2 Application Profiles. Each profile could have individual variables and VM configurations.
 
 # Macros in Nutanix Calm
 
-Macros enabled the designer to access the value of variables and
-properties that are set on entities. The variables could be user defined
-or system generated. Macros made the scripts generic and allow creation
-of reusable workflows.
+Macros enabled the designer to access the value of variables and properties that are set on entities. The variables could be user defined
+or system generated. Macros made the scripts generic and allow creation of reusable workflows.
 
-The macros was in the following format: @@{variable_name}@@ and could be
-referenced in the shell script, e-script and powershell. Please reference to this url to find out a
-list of system defined variables.
-
-<https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Calm-Admin-Operations-Guide-v3_6_0:nuc-components-macros-overview-c.html>
+The macros was in the following format: ``@@{variable_name}@@`` and could be referenced in the shell script, e-script and powershell. Please reference to this url to find out a
+list of [system defined variables](https://portal.nutanix.com/page/documents/details?targetId=Nutanix-Calm-Admin-Operations-Guide-v3_6_0:nuc-components-macros-overview-c.html)
 

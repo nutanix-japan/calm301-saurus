@@ -35,7 +35,7 @@ module.exports = {
       type: 'category',
       label: 'Calm 101',
       items: ['what_is_calm/what_is_calm',
-              'calm_project/calm_project',
+              'calm_project/calm_project_new',
               'calm_blueprint/calm_blueprint',
               'calm_marketplace/calm_marketplace',
               'calm_linux_track/calm_linux_app/calm_linux_app',
