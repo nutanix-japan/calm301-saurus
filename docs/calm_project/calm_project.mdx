@@ -1,8 +1,8 @@
 ---
-title: "Projects"
+title: "Calm Projects"
 ---
 
-# Pre-Requisites:
+# Pre-Requisites
 
 This lab is created using Nutanix Calm 3.5.2 and Prism Central version pc.2022.6
 
@@ -10,156 +10,135 @@ This lab is created using Nutanix Calm 3.5.2 and Prism Central version pc.2022.6
 
 Project is the logical construct that allowed an administrator to assign both infrastructure resources and the roles/permissions of Active Directory users/groups to specific Blueprints and Applications.
 
-1.  Click on **Project** in the left hand toolbar . Click on **Create
-    Project**.
+1. Click on **Project** in the left hand toolbar . Click on **Create Project**
 
     ![](images/project_list.png)
 
-2.  Fill in the Project Name. Eg Trainee_Project_Name. Click on
-    **Create**.
+2. Fill in the Project Name. Eg Trainee_Project_Name. Click on **Create**
+   
+   ![](images/project_namel.png)
 
-    ![](images/project_namel.png)
+3. This project is in the **Pending** state.  Click on **Infrastructure**
 
-3.  This project is in the **Pending** state.  Click on **Infrastructure**
+   ![](images/project-details-pc2022-6.png)
 
-    ![](images/project-details-pc2022-6.png)
+## Add Infrastructure to the Project
 
-## Add Infrastructure in Project
+1. Click on **Select Account**. Select **NTNX_LOCAL_AZ_34**
 
-1.  Click on **Select Account**. Select **NTNX_LOCAL_AZ_34**
+   ![](images/add-infrastructure-pc2022-6.png)
 
-    ![](images/add-infrastructure-pc2022-6.png)
+2. Click on **Configure Resources**
+  
+   ![](images/project-infrastructure-pc2022-6.png)
 
-2.  Click on **Configure Resources**. 
+3. Click on **Select Cluster** and click on **Select VLANs**
 
-    ![](images/project-infrastructure-pc2022-6.png)
+   ![](images/select-cluster-pc2022-6.png)
 
-3.  Click on **Select Cluster**.  Click on **Select VLANs**
+4. Check on **Primary** Network and click on **Select VPCs and Subnets**
 
-    ![](images/select-cluster-pc2022-6.png)
+   ![](images/select-vlan-pc2022-6.png)
 
-4.  Check on **Primary** Network.  Click on **Select VPCs and Subnets**
+5. The project is now in **Active** state
 
-    ![](images/select-vlan-pc2022-6.png)
-
-### No VPC in the cluster
-
-1.  This section is for cluster not configured with VPC.  Please scroll down to **Configure VPC to the project** for cluster configured with VPC.
-
-2.  Click **Confirm**
-
-    ![](images/no-vpc.png)
-
-3.  Click **Confirm**
-
-    ![](images/no-vpc-confirm.png)
-
-4.  Click **Save**   
-
-    ![](images/save-no-vpc.png)
-
-5.  The project is in the **Active** state
-
-    ![](images/project-active.png)
+   ![](images/project-active.png)
 
 ### Configure VPC to the project 
 
-1.  This section is for cluster configured with VPC.  Select **VPCs & Subnets**
+This section is for cluster configured with VPC.  
 
-    ![](images/project-vpc-2022-6.png)
+1. Select **VPCs & Subnets**
 
-2.  Select **VPC**. Select the Overlay Subnet **SG-AMK** Network. Click
-    on **Confirm**.
+   ![](images/project-vpc-2022-6.png)
 
-    ![](images/project-vpc-2022-6.png)
+2. Select **VPC**. Select the Overlay Subnet **SG-AMK** Network. Click on **Confirm**.
 
-3.  Select **Confirm**.
+   ![](images/project-vpc-2022-6.png)
 
-    ![](images/project-vpc-confirm-pc2022-6.png)
+3. Review and click on **Confirm**
+   
+   ![](images/project-vpc-confirm-pc2022-6.png)
 
-4.  Click on **Save**
+4. Click on **Save** on the top right corner
 
-    ![](images/project-infrastructure-save-pc2022-6.png)
+   ![](images/project-infrastructure-save-pc2022-6.png)
 
 ## Configure Quota in Project
 
-1.  Configure this section to configure the quota allocated to this project.
+1. Configure this section to configure the quota allocated to this project
 
-2.  Check the **Quotas**
+2. Check on the **Quotas** check-box
 
-    ![](images/project-quota-pc2022-6.png)
-
+   ![](images/project-quota-pc2022-6.png)
 
 ## Configure the Environment in Project
 
-1.  The environment play a critical role to allow the **Consumer** role
-    user to launch a marketplace item with pre-defined hardware
-    specification, guest customization and credentials required in the
-    execution of the blueprint.
+The environment play a critical role to allow the **Consumer** role user to launch a marketplace item with pre-defined hardware specification, guest customization and credentials required in the execution of the blueprint.
 
-2.  Click on **Create Environment**
+1. Click on **Create Environment**
 
-    ![](images/create-environment.png)
+   ![](images/create-environment.png)
 
-3.  Fill in the name for the environment. Eg **Default Environment**.
+2. Fill in the name for the environment. Eg **Default Environment**
 
-    ![](images/default-environment.png)
+   ![](images/default-environment.png)
 
-4.  Click on **Select Infrastructure**
+3. Click on **Select Infrastructure**
 
-    ![](images/select-infrastructure.png)
-  
-5.  Scroll down
+   ![](images/select-infrastructure.png)
 
-    ![](images/Environment-Detail.png)
+4. Scroll down 
 
-6.  Click on **VM Configuration**
+   ![](images/Environment-Detail.png)
 
-    ![](images/vm-configuration.png)
+5. Click on **VM Configuration**
 
-7.  Select the cluster
+   ![](images/vm-configuration.png)
 
-    ![](images/env-select-cluster-pc2022-6.png)
+6. Select the cluster
+ 
+   ![](images/env-select-cluster-pc2022-6.png)
 
-8.  Click on **Linux**. Fill in the following hardware specification.
+7. Click on **Linux**. Fill in the following hardware specification
 
-    ![](images/linux-hw-pc2022-6.png)
+   ![](images/linux-hw-pc2022-6.png)
 
-9.  Copy the **cloud-init** contents into the **Guest Customization**
+8. Copy the **cloud-init** contents into the **Guest Customization**
 
-    ``` bash
-    #cloud-config
-    users:
-    - name: centos
-    ssh-authorized-keys:
-      - @@{centos_public_key}@@
-    sudo: ['ALL=(ALL) NOPASSWD:ALL'] 
-    ```
+   ``` bash
+   #cloud-config
+   users:
+   - name: centos
+   ssh-authorized-keys:
+     - @@{centos_public_key}@@
+   sudo: ['ALL=(ALL) NOPASSWD:ALL'] 
+   ```
+9. Expand the **DISK** section. Select the disk image as shown
+   
+   ![](images/env-disk-image-pc2022-6.png)
 
-10.  Expand the **DISK** section. Select the disk image as shown.
+10. Expand the **Network Adapter** section
 
-    ![](images/env-disk-image-pc2022-6.png)
-
-11.  Expand the **Network Adapter** section. Select the Network Adapter:
-    **Primary**.
+11. Select the Network Adapter: **Primary**
 
     ![](images/env-network-adapter-pc2022-6.png)
 
-11.  Expand the **Connection** section. Click on **Add New Credential**.
+12. Expand the **Connection** section. Click on **Add New Credential**
 
     ![](images/env-connection-pc2022-6.png)
 
 ### Create Credential
 
-1.  Create the credential for centos. Fill out the following fields:
+1. Create the credential for centos. Fill out the following fields:
+   
+   -   **Credential Name** - centos
+   -   **Username** - centos
+   -   **Secret Type** - ssh private key
+   -   **Key** - Paste in your own private key, or use the following private key:
 
-    -   **Credential Name** - centos
-    -   **Username** - centos
-    -   **Secret Type** - ssh private key
-    -   **Key** - Paste in your own private key, or use the following private key:
-
-    ```bash
-    -----BEGIN RSA PRIVATE KEY-----
+   ```text
+   -----BEGIN RSA PRIVATE KEY-----
     MIIEowIBAAKCAQEAii7qFDhVadLx5lULAG/ooCUTA/ATSmXbArs+GdHxbUWd/bNG
     ZCXnaQ2L1mSVVGDxfTbSaTJ3En3tVlMtD2RjZPdhqWESCaoj2kXLYSiNDS9qz3SK
     6h822je/f9O9CzCTrw2XGhnDVwmNraUvO5wmQObCDthTXc72PcBOd6oa4ENsnuY9
@@ -189,23 +168,23 @@ Project is the logical construct that allowed an administrator to assign both in
     ```
 
     ![](images/centos_credential.png)
+    
+2. Click on **Done**. Click on **Next**
 
-2.  Click on **Done**. Click on **Next**
+3. Click on **Save Environment**
 
-3.  Click on **Save Environment**.
-
-    ![](images/Save_Environment.png)
+   ![](images/Save_Environment.png)
 
 ## Verify the Environment
 
-1.  Verify the environment was created. Click on **1 environment added**
+1. Verify the environment was created. Click on **1 environment added**
+   
+   ![](images/project-details-2-pc2022-6.png)
 
-    ![](images/project-details-2-pc2022-6.png)
+2. Click on **Update**
+   
+   ![](images/update-env-pc2022-6.png)
 
-2.  Click on Update.
+3. Verify the **Ready for Marketplace usage, Linux only**
 
-    ![](images/update-env-pc2022-6.png)
-
-3.  Verify the **Ready for Marketplace usage, Linux only**
-
-    ![](images/linux-env-verification-pc2022-6.png)
+   ![](images/linux-env-verification-pc2022-6.png)
